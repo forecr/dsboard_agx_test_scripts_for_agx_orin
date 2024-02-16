@@ -95,6 +95,7 @@ function test_menu {
 		echo "14) Digital Out Test"
 		echo "15) Digital In-0 Test"
 		echo "16) Digital In-1 Test"
+		echo "17) Temperature Sensor Test"
 		read -p "Type the test number (or quit) [1/.../q]: " choice
 		echo ""
 
@@ -177,6 +178,14 @@ function test_menu {
 			16 )
 				echo "Digital In-1 Test"
 				sudo gnome-terminal -- $SCRIPTS_FOLDER/test_digital_in1_agx_orin.sh
+				;;
+			17 )
+				echo "Temperature Sensor Test"
+				if [ -d "/sys/bus/i2c/devices/7-0049" ]; then
+					gnome-terminal -- watch -n 0.1 cat /sys/bus/i2c/devices/7-0049/hwmon/hwmon1/temp1_input
+				else
+					echo "Temperature Sensor could not found"
+				fi
 				;;
 			[Qq]* )
 				echo "Quitting ..."
