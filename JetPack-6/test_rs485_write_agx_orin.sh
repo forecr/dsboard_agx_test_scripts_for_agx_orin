@@ -14,17 +14,9 @@ PID_HALF_FULL=$!
 gpioset --mode=signal `gpiofind "PEE.05"`=1 &
 PID_RS485_CTRL=$!
 
-trap interrupt_func INT
-interrupt_func() {
-	kill $PID_RS422_232
-	kill $PID_HALF_FULL
-	kill $PID_RS485_CTRL
-}
+sudo gtkterm -p /dev/ttyTHS3 -s 115200 -w RS485
 
-# Check the system is JetPack-5.x based
-if [ "$(cat /etc/nv_tegra_release | grep -c '# R35')" = "1" ]; then
-	sudo gtkterm -p /dev/ttyTHS4 -s 115200 -w RS485
-else
-	sudo gtkterm -p /dev/ttyTHS2 -s 115200 -w RS485
-fi
+kill $PID_RS422_232
+kill $PID_HALF_FULL
+kill $PID_RS485_CTRL
 
